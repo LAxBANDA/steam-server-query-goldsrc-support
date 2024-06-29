@@ -1,4 +1,5 @@
 export interface InfoResponse {
+  ping?: number;
   ip?: string; // only for goldsrc
   mod?: number; // only for goldsrc
   protocol: number;

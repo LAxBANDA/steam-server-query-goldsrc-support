@@ -67,8 +67,11 @@ class GameServerQuery {
 
   public async info(): Promise<InfoResponse> {
     let resultBuffer: Buffer;
+    const startDate = Date.now();
+    let ping = 1000;
     try {
       resultBuffer = await this._promiseSocket.send(this._buildInfoPacket(), this._host, this._port);
+      ping = Date.now() - startDate;
     } catch (err: any) {
       this._promiseSocket.closeSocket();
       throw new Error(err);
@@ -89,6 +92,7 @@ class GameServerQuery {
     this._promiseSocket.closeSocket();
 
     const parsedInfoBuffer = this._parseInfoBuffer(resultBuffer);
+    parsedInfoBuffer.ping = ping;
     return parsedInfoBuffer as InfoResponse;
   }
 
